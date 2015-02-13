@@ -1,10 +1,11 @@
 Návrhové vzory
 ==============
 
+
 Zásady OOP
 ==========
 
-**Rozhraní** je množina informací, které o sobě daná entita zveřejní. Touto informací může být signatura nebo kontrakt. Publikované rozhraní by mělo být nedotknutelné. Zastaralé entity se označují jako deprecated.
+**Rozhraní** je množina informací, které o sobě daná entita (třída, enum, interface, metoda) zveřejní. Touto informací může být signatura nebo kontrakt. Publikované rozhraní by mělo být nedotknutelné. Zastaralé entity se označují jako deprecated.
 
 **Signatura** (hlavička, deklarace) je souhrn informací zpracovatelných překladačem. Signatura dat představuje název a typ. Signatura metody představuje název, typ návratové hodnoty, typy parametrů, výjimky a další atributy. Signatura datových typů (class, enum, interface) představuje název typu, název předka, implementovaných rozhraní a signatury všech jeho členů.
 
@@ -51,3 +52,24 @@ Návrh řízený odpovědnostmi (responsibility-driven design)
 ---------------------------------------------------------
 
 Jeden úkol by měla řešit pouze jedna entita. Při úpravách funkcionality je pak nutné upravit pouze danou entitu a není třeba zkoumat celý kód.
+
+Minimální vzájemná provázanost (coupling)
+-----------------------------------------
+
+Je vhodné minimalizovat počet vazeb mezi entitami.
+
+Vyhýbat se duplicitám v kódu
+----------------------------
+
+Duplicitní (zkopírovaný) kód může být náchylný k chybám. Vhodné je též používat pojmenované konstanty namísto literálů.
+
+Nepodřizovat návrh snahám o maximální efektivitu
+------------------------------------------------
+
+Není vhodné optimalizovat kód předčasně. Průměrný program tráví 80% svého života ve 20% svého kódu. Optimalizace některých částí kódu může být zbytečná. Důležité je, aby šel program dobře modifikovat. Na detaily je vhodné se soustředit, až když je celek navržen a odladěn. Optimalizovat je vhodné až tehdy, kdy skutečně vím, která část programu je neefektivní.
+
+
+Simple Factory Method
+=====================
+
+Definuje statickou metodu nahrazující konstruktor. Používá se tam, kde potřebujeme získat odkaz na objekt, ale přímé použití konstruktoru není z nejrůznějších příčin optimálním řešením.
