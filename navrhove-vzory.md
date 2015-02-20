@@ -73,3 +73,64 @@ Simple Factory Method
 =====================
 
 Definuje statickou metodu nahrazující konstruktor. Používá se tam, kde potřebujeme získat odkaz na objekt, ale přímé použití konstruktoru není z nejrůznějších příčin optimálním řešením.
+
+Tento vzor se hodí, pokud potřebujeme vytváření nových instancí nějakým způsobem hlídat, nebo provádět akce, které nám nedovolí konstruktor. Tovární metoda může vytvořit novou instanci, nebo vrátit odkaz na již existující instanci.
+
+Například třída _Integer_ ze standardní knihovny má předdefinované instance pro hodnoty -128 až 127. Pokud použiju konstruktor, vždy vytvořím novou instanci. Pokud vžak použiju tovární metodu `valueOf()`, získám pro malé hodnoty odkaz na již existující instanci. Je to rychlejší a šetřím paměť.
+
+Charakteristika Simple Factory Method a rozdíly oproti konstruktoru:
+
+- Statická metoda, která vrací instanci zadané třídy (včetně instancí potomků)
+- Vytváří novou instanci, nebo vrací odkaz na již existující
+- Může vracet instance různých typů (potomky)
+- Větší svoboda v definici (volání přetížené verze konstruktoru musí být prvním příkazem těla konstruktoru)
+- Metoda může mít libovolné jméno
+
+Konvence pro názvy továrních metod: 
+
+- getInstance
+- valueOf
+- getFooBar
+
+```java
+public abstract class Human
+{
+	private static int index = 0;
+
+	public static Human getHuman()
+	{
+		switch(index++ % 3)
+		{
+			case 0: return new LazyHuman();
+			case 1: return new BriskHuman();
+			case 2: return new WorkoholicHuman();
+			default: throw new RuntimeException("Invalid maximum");
+		}
+	}
+
+	public abstract void wakeUp();
+	public abstract void work();
+	public abstract void sleep();
+
+	private static class LazyHuman extends Human
+	{
+		public void wakeUp() { System.out.println("Waking up slowly"); }
+		public void work() { System.out.println("Working slowly"); }
+		public void sleep() { System.out.println("Sleeping deeply"); }
+	}
+
+	private static class BriskHuman extends Human
+	{
+		public void wakeUp() { System.out.println("Waking up briskly"); }
+		public void work() { System.out.println("Working briskly"); }
+		public void sleep() { System.out.println("Sleeping normally"); }
+	}
+
+	private static class WorkoholicHuman extends Human
+	{
+		public void wakeUp() { System.out.println("Waking up quickly"); }
+		public void work() { System.out.println("Working a lot"); }
+		public void sleep() { System.out.println("Sleeping shortly"); }
+	}
+}
+```
