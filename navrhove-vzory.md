@@ -157,7 +157,7 @@ Immutable Objects
 
 **Hodnotový objektový typ** - slouží k uchovávání hodnot. Mají definovánu vlastní verzi metody `equals(Object)`. Hodnotové datové typy se doporučuje definovat jako neměnné (viz níže). Příklady: java.lang.String, java.io.File, java.awt.Point.
 
-- Neměnný (immutable) hodnotový objektový typ - hodnota uchovávaná v instanci nelze změnit. Instance se chovají stejně jako hodnoty primitivních datových typů. Jakmile do nich uložíme odkaz na hodnotu, vždy bude odkazovat pouze na tuto hodnotu. Neměnné typy jsou vláknově bezpečné. Příklady: obalové typy, String, File.
+- Neměnný (immutable) hodnotový objektový typ - hodnota uchovávaná v instanci nelze změnit. Instance se chovají stejně jako hodnoty primitivních datových typů. Jakmile do nich uložíme odkaz na hodnotu, vždy bude odkazovat pouze na tuto hodnotu. Neměnné typy jsou vláknově bezpečné. Všechny atributy, které určují hodnotu objektu, by měly být definovány jako konstantní (final). Je nutné zapouzdřit odkazy na měnitelné objekty uvnitř neměnného objektového typu (zkopírovat, aby se měnitelný objekt stal neměnným). Metody nesmí modifikovat hodnotu, ale musí vracet nový objekt. Třída typu by měla být definována jako konečná (final). Příklady: obalové typy, String, File.
 - Proměnný (mutable) hodnotový objektový typ - hodnota uchovávaná v instanci se může kdykoliv změnit. Instance nemohou vytvářet množiny, nelze je používat jako klíče běžných map a nelze s nimi provádět některé další operace. Příklady: Point.
 
 **Referenční objektový typ** - jejich hodnotou je instance sama. Metoda `equals(Object)` prohlásí dvě instance za ekvivalentní, jedná-li se o jednu a touž instanci. Vlastnosti instance se můžou v průběhu času měnit.
