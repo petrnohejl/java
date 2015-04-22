@@ -76,7 +76,7 @@ Definuje statickou metodu nahrazující konstruktor. Používá se tam, kde pot�
 
 Tento vzor se hodí, pokud potřebujeme vytváření nových instancí nějakým způsobem hlídat, nebo provádět akce, které nám nedovolí konstruktor. Tovární metoda může vytvořit novou instanci, nebo vrátit odkaz na již existující instanci.
 
-Například třída _Integer_ ze standardní knihovny má předdefinované instance pro hodnoty -128 až 127. Pokud použiju konstruktor, vždy vytvořím novou instanci. Pokud vžak použiju tovární metodu `valueOf()`, získám pro malé hodnoty odkaz na již existující instanci. Je to rychlejší a šetřím paměť.
+Například třída _Integer_ ze standardní knihovny má předdefinované instance pro hodnoty -128 až 127. Pokud použiji konstruktor, vždy vytvořím novou instanci. Pokud však použiji tovární metodu `valueOf()`, získám pro malé hodnoty odkaz na již existující instanci. Je to rychlejší a šetřím paměť.
 
 Charakteristika Simple Factory Method a rozdíly oproti konstruktoru:
 
@@ -163,3 +163,39 @@ Immutable Objects
 **Referenční objektový typ** - jejich hodnotou je instance sama. Metoda `equals(Object)` prohlásí dvě instance za ekvivalentní, jedná-li se o jednu a touž instanci. Vlastnosti instance se můžou v průběhu času měnit.
 
 
+Crate
+=====
+
+Využívá se pro sloučení několika samostatných informací do jednoho objektu, pomocí nějž lze informace ukládat nebo přenášet mezi metodami. Hlavním účelem je jednoduchý přenos hodnot od zdroje k příjemci.
+
+Tento vzor se hodí, pokud je potřeba vrátit z metody více než jednu hodnotu. Java neumožňuje, narozdíl např. od C++, vracet data z metody pomocí vstupních parametrů předávaných odkazem. Odkaz na objekt se v Javě předává hodnotou, takže metoda nemůže v parametru vrátit jiný odkaz než ten, jejž obdržela.
+
+Atributy v přepravce se většinou deklarují jako veřejné kvůli přehlednosti, protože hlavním cílem je pouze jednoúčelově přenést hodnoty. Jakmile se data zpracují, přepravka se zahodí. Některé přepravky mají definovány i doplňkové metody, ale není to příliš doporučováno, protože to narušuje soudržnost.
+
+Další využití je, chceme-li v rámci třídy uložit skupinu informací do soukromého kontejneru. Přepravka se pak definuje jako soukromá vnořená nebo vnitřní třída dané třídy.
+
+
+Servant
+=======
+
+Používá se pokud chceme skupině tříd nabídnout nějakou funkčnost, aniž bychom zabudovávali reakci na příslušnou zprávu do každé z nich. Služebník je třída, jejíž instance poskytují metody, které si vezmou potřebnou činnost na starost, přičemž objekty, pro něž danou činnost vykonávají, přebírají jako parametry.
+
+Cílem služebníka je přidat skupině tříd nějakou dovednost a zároveň zabránit zbytečnému opakování stejného kódu.
+
+Implementace:
+
+- Služebník definuje metody, ve kterých se předává obsluhovaná instance jako parametr
+- Definujeme interface, v němž deklarujeme požadované vlastnosti obsluhované instance
+- Obsluhovaná instance musí implementovat tento interface
+
+Pokud potřebuje instance vykonat nějakou akci, zavolá se metoda služebníka, předá se jí instance jako parametr a služebník danou akci obslouží. Existují dvě různé implementace, které se liší podle toho, zda metodu služebníka volá přímo obsluhovaná instance, anebo ta instance, která po služebníkovi žádá službu a obsluhovanou instanci mu předává jako parametr.
+
+
+Null Object
+===========
+
+Prázdný objekt je plnohodnotný objekt, který se používá v situaci, kdy prázdný ukazatel `null` přináší nějaké problémy, např. neustálé testování prázdnosti odkazu.
+
+Díky tomuto objektu není nutné testovat nullovost a nehrozí vyvolání výjimky _NullPointerException_. Předejdeme též opakování obdobného kódu, protože kód, který by se měl provádět v případě, že je odkaz prázdný, přesuneme do definice prázdného objektu.
+
+Prázdný objekt se definuje jako potomek dané třídy neprázdných objektů a překrývá metody, před jejichž voláním je třeba testovat prázdnost odkazu. Třída prázdného objektu musí mít pouze jedinou instanci, takže se definuje jako Singleton.
