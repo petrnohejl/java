@@ -199,3 +199,11 @@ Prázdný objekt je plnohodnotný objekt, který se používá v situaci, kdy pr
 Díky tomuto objektu není nutné testovat nullovost a nehrozí vyvolání výjimky _NullPointerException_. Předejdeme též opakování obdobného kódu, protože kód, který by se měl provádět v případě, že je odkaz prázdný, přesuneme do definice prázdného objektu.
 
 Prázdný objekt se definuje jako potomek dané třídy neprázdných objektů a překrývá metody, před jejichž voláním je třeba testovat prázdnost odkazu. Třída prázdného objektu musí mít pouze jedinou instanci, takže se definuje jako Singleton.
+
+
+Library Class
+=============
+
+Knihovní třída slouží jako obálka pro soubor statických metod. Je vhodné zamezit třídě vytváření instancí.
+
+Knihovní třída se deklaruje jako konečná (final) s privátním bezparametrickým konstruktorem a prázdným tělem.
