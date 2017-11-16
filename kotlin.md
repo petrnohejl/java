@@ -20,6 +20,81 @@ Packages
 package com.example
 
 import foo.Bar
+import moo.*
+import boo.Bar as bBar
+```
+
+
+Types
+=====
+
+Numbers
+-------
+
+- Double
+- Float
+- Long
+- Int
+- Short
+- Byte
+
+```kotlin
+123L // long
+0x0F // hexadecimal
+0b00001011 // binary
+123.5F // float
+```
+
+```kotlin
+// underscores in numeric literals
+1_000_000
+1234_5678_9012_3456L
+0xFF_EC_DE_5E
+0b11010010_01101001_10010100_10010010
+```
+
+Arrays
+------
+
+```kotlin
+val a = arrayOf(1, 2, 3)
+val b = intArrayOf(1, 2, 3)
+val c: Array<Int?> = arrayOfNulls(8)
+val d: Array<String> = Array(8, { it.toString() })
+a[0] = a[1] + a[2]
+```
+
+String
+------
+
+```kotlin
+val s = "Hello, world!\n"
+
+val text = """
+|Tell me and I forget.
+|Teach me and I remember.
+|Involve me and I learn.
+|(Benjamin Franklin)
+""".trimMargin()
+```
+
+String templates
+----------------
+
+```kotlin
+var a = 1
+val s1 = "a is $a" 
+
+a = 2
+val s2 = "${s1.replace("is", "was")}, but now is $a"
+```
+
+Other
+-----
+
+```kotlin
+val b: Boolean = true
+val c: Char = '8'
 ```
 
 
@@ -74,53 +149,6 @@ x += 1
 ```
 
 
-String templates
-================
-
-```kotlin
-var a = 1
-val s1 = "a is $a" 
-
-a = 2
-val s2 = "${s1.replace("is", "was")}, but now is $a"
-```
-
-
-Conditional expressions
-=======================
-
-If
---
-
-```kotlin
-fun maxOf(a: Int, b: Int): Int {
-    if (a > b) {
-        return a
-    } else {
-        return b
-    }
-}
-```
-
-```kotlin
-fun maxOf(a: Int, b: Int) = if (a > b) a else b
-```
-
-When
-----
-
-```kotlin
-fun describe(obj: Any): String =
-when (obj) {
-    1          -> "One"
-    "Hello"    -> "Greeting"
-    is Long    -> "Long"
-    !is String -> "Not a string"
-    else       -> "Unknown"
-}
-```
-
-
 Null safety
 ===========
 
@@ -156,6 +184,68 @@ fun getStringLength(obj: Any): Int? {
 ```
 
 
+Conditional expressions
+=======================
+
+If
+--
+
+```kotlin
+fun maxOf(a: Int, b: Int): Int {
+    if (a > b) {
+        return a
+    } else {
+        return b
+    }
+}
+```
+
+```kotlin
+fun maxOf(a: Int, b: Int) = if (a > b) a else b
+
+val max = if (a > b) {
+    print("Choose a")
+    a
+} else {
+    print("Choose b")
+    b
+}
+```
+
+When
+----
+
+```kotlin
+when (x) {
+    0, 1 -> print("x == 0 or x == 1")
+    2 -> print("x == 2")
+    else -> {
+        print("x is neither 1 nor 2")
+    }
+}
+```
+
+```kotlin
+fun describe(obj: Any): String =
+when (obj) {
+    0          -> "Zero"
+    in 1..9    -> "Numero"
+    "Hello"    -> "Greeting"
+    is Long    -> "Long"
+    !is String -> "Not a string"
+    else       -> "Unknown"
+}
+```
+
+```kotlin
+when {
+    x.isOdd() -> print("x is odd")
+    x.isEven() -> print("x is even")
+    else -> print("x is funny")
+}
+```
+
+
 Loops
 =====
 
@@ -175,6 +265,12 @@ for (index in items.indices) {
 }
 ```
 
+```kotlin
+for ((index, value) in array.withIndex()) {
+    println("the element at $index is $value")
+}
+```
+
 While
 -----
 
@@ -185,6 +281,12 @@ while (index < items.size) {
     println("item at $index is ${items[index]}")
     index++
 }
+```
+
+```kotlin
+do {
+    val y = retrieveData()
+} while (y != null)
 ```
 
 
