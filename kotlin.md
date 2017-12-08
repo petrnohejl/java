@@ -105,6 +105,8 @@ Functions
 fun sum(a: Int, b: Int): Int {
     return a + b
 }
+
+val result = sum(1, 2)
 ```
 
 ```kotlin
@@ -123,6 +125,86 @@ fun printSum(a: Int, b: Int): Unit {
 // omitted Unit
 fun printSum(a: Int, b: Int) {
     println("sum of $a and $b is ${a + b}")
+}
+```
+
+```kotlin
+// default arguments
+fun read(b: Array<Byte>, off: Int = 0, len: Int = b.size) {
+    // ...
+}
+```
+
+```kotlin
+fun foo(bar: Int = 0, baz: Int) {
+    // ...
+}
+
+foo(baz = 1)
+```
+
+```kotlin
+fun foo(bar: Int = 0, baz: Int = 1, qux: () -> Unit) {
+    // ...
+}
+
+foo(1) { println("hello") } // default value baz = 1 
+foo { println("hello") } // default values bar = 0 and baz = 1
+```
+
+```kotlin
+fun reformat(str: String,
+        normalizeCase: Boolean = true,
+        upperCaseFirstLetter: Boolean = true,
+        divideByCamelHumps: Boolean = false,
+        wordSeparator: Char = ' ') {
+    // ...
+}
+
+reformat(str)
+reformat(str, true, true, false, '_')
+reformat(str, wordSeparator = '_')
+reformat(str,
+    normalizeCase = true,
+    upperCaseFirstLetter = true,
+    divideByCamelHumps = false,
+    wordSeparator = '_'
+)
+```
+
+```kotlin
+fun <T> asList(vararg ts: T): List<T> {
+    val result = ArrayList<T>()
+    for (t in ts)
+        result.add(t)
+    return result
+}
+
+val list = asList(1, 2, 3)
+
+val a = arrayOf(1, 2, 3)
+val list = asList(-1, 0, *a, 4)
+```
+
+```kotlin
+infix fun Int.shl(x: Int): Int {
+    // ...
+}
+
+1 shl 2
+1.shl(2)
+```
+
+```kotlin
+fun dfs(graph: Graph) {
+    val visited = HashSet<Vertex>()
+    fun dfs(current: Vertex) {
+        if (!visited.add(current)) return
+        for (v in current.neighbors)
+            dfs(v)
+    }
+
+    dfs(graph.vertices[0])
 }
 ```
 
@@ -150,9 +232,34 @@ Null safety
 ===========
 
 ```kotlin
+var x: String? = "abc"
+x = null
+
+val l: Int = if (x != null) x.length else -1
+
+val l: Int? = x?.length
+
+val l: Int = x?.length ?: -1
+```
+
+```kotlin
+bob?.department?.head?.name
+```
+
+```kotlin
 // return nullable value
 fun parseInt(str: String): Int? {
     // ...
+}
+```
+
+```kotlin
+val l = b!!.length
+```
+
+```kotlin
+value?.let {
+    // execute this block if not null
 }
 ```
 
@@ -177,6 +284,26 @@ fun getStringLength(obj: Any): Int? {
 
     // obj is automatically cast to String in this branch
     return obj.length
+}
+```
+
+```kotlin
+val x: String = y as String
+val x: String? = y as String?
+val x: String? = y as? String
+```
+
+```kotlin
+if (something is List<*>) {
+    something.forEach { println(it) }
+}
+```
+
+```kotlin
+fun handleStrings(list: List<String>) {
+    if (list is ArrayList) {
+        // ...
+    }
 }
 ```
 
@@ -316,6 +443,12 @@ for (x in 9 downTo 0 step 3) {
 }
 ```
 
+```kotlin
+for (x in 1 until 10) {
+     print(x)
+}
+```
+
 
 Collections
 ===========
@@ -339,6 +472,11 @@ fruits
     .sortedBy { it }
     .map { it.toUpperCase() }
     .forEach { println(it) }
+```
+
+```kotlin
+println(map["key"])
+map["key"] = value
 ```
 
 
@@ -914,4 +1052,249 @@ fun example(computeFoo: () -> Foo) {
         memoizedFoo.doSomething()
     }
 }
+```
+
+
+Higher-order functions
+======================
+
+```kotlin
+val sum = { x: Int, y: Int -> x + y }
+```
+
+```kotlin
+val sum: (Int, Int) -> Int = { x, y -> x + y } // with optional type annotations
+```
+
+```kotlin
+fun <T> lock(lock: Lock, body: () -> T): T {
+    lock.lock()
+    try {
+        return body()
+    }
+    finally {
+        lock.unlock()
+    }
+}
+
+fun toBeSynchronized() = sharedResource.operation()
+val result = lock(lock, ::toBeSynchronized)
+
+val result = lock(lock, { sharedResource.operation() })
+
+val result = lock (lock) {
+    sharedResource.operation()
+}
+```
+
+```kotlin
+fun <T, R> List<T>.map(transform: (T) -> R): List<R> {
+    val result = arrayListOf<R>()
+    for (item in this)
+        result.add(transform(item))
+    return result
+}
+
+val doubled = ints.map { value -> value * 2 }
+
+val doubled = ints.map { it * 2 }
+```
+
+```kotlin
+strings
+    .filter { it.length == 5 }
+    .sortedBy { it }
+    .map { it.toUpperCase() }
+```
+
+```kotlin
+map.forEach { _, value -> println("$value!") }
+```
+
+```kotlin
+fun <T> max(collection: Collection<T>, less: (T, T) -> Boolean): T? {
+    var max: T? = null
+    for (it in collection)
+        if (max == null || less(max, it))
+            max = it
+    return max
+}
+
+max(strings, { a, b -> a.length < b.length })
+```
+
+```kotlin
+val compare: (x: T, y: T) -> Int = ...
+var sum: ((Int, Int) -> Int)? = null
+```
+
+Anonymous functions
+-------------------
+
+```kotlin
+fun(x: Int, y: Int): Int = x + y
+```
+
+```kotlin
+fun(x: Int, y: Int): Int {
+    return x + y
+}
+```
+
+```kotlin
+ints.filter(fun(item) = item > 0)
+```
+
+Closures
+--------
+
+```kotlin
+var sum = 0
+ints.filter { it > 0 }.forEach {
+    sum += it
+}
+print(sum)
+```
+
+
+Inline functions
+================
+
+```kotlin
+inline fun <T> lock(lock: Lock, body: () -> T): T {
+    // ...
+}
+```
+
+```kotlin
+inline fun foo(inlined: () -> Unit, noinline notInlined: () -> Unit) {
+    // ...
+}
+```
+
+```kotlin
+inline fun <reified T> TreeNode.findParentOfType(): T? {
+    var p = parent
+    while (p != null && p !is T) {
+        p = p.parent
+    }
+    return p as T?
+}
+```
+
+```kotlin
+inline fun <reified T> membersOf() = T::class.members
+
+fun main(s: Array<String>) {
+    println(membersOf<StringBuilder>().joinToString("\n"))
+}
+```
+
+
+Destructuring declarations
+==========================
+
+```kotlin
+val (name, age) = person
+
+println(name)
+println(age)
+```
+
+```kotlin
+for ((a, b) in collection) { ... }
+```
+
+```kotlin
+data class Result(val result: Int, val status: Status)
+fun function(...): Result {
+    // ...
+    return Result(result, status)
+}
+
+val (result, status) = function(...)
+```
+
+```kotlin
+for ((key, value) in map) {
+   // ...
+}
+```
+
+```kotlin
+val (_, status) = getResult()
+```
+
+```kotlin
+{ a -> ... } // one parameter
+{ a, b -> ... } // two parameters
+{ (a, b) -> ... } // a destructured pair
+{ (a, b), c -> ... } // a destructured pair and another parameter
+```
+
+
+Equality
+========
+
+```kotlin
+a === b // referential equality
+a !== b // referential non-equality
+a == b // structural equality
+a != b // structural non-equality
+```
+
+
+Exceptions
+==========
+
+```kotlin
+throw MyException("Hi There!")
+```
+
+```kotlin
+try {
+    // some code
+}
+catch (e: SomeException) {
+    // handler
+}
+finally {
+    // optional finally block
+}
+```
+
+```kotlin
+val a: Int? = try { parseInt(input) } catch (e: NumberFormatException) { null }
+```
+
+```kotlin
+fun fail(message: String): Nothing {
+    throw IllegalArgumentException(message)
+}
+```
+
+
+Type aliases
+============
+
+```kotlin
+typealias NodeSet = Set<Network.Node>
+typealias FileTable<K> = MutableMap<K, MutableList<File>>
+```
+
+```kotlin
+typealias MyHandler = (Int, String, Any) -> Unit
+typealias Predicate<T> = (T) -> Boolean
+```
+
+```kotlin
+class A {
+    inner class Inner
+}
+class B {
+    inner class Inner
+}
+
+typealias AInner = A.Inner
+typealias BInner = B.Inner
 ```
