@@ -93,14 +93,11 @@ Konvence pro názvy továrních metod:
 - getFooBar
 
 ```java
-public abstract class Human
-{
+public abstract class Human {
 	private static int index = 0;
 
-	public static Human getHuman()
-	{
-		switch(index++ % 3)
-		{
+	public static Human getHuman() {
+		switch (index++ % 3) {
 			case 0: return new LazyHuman();
 			case 1: return new BriskHuman();
 			case 2: return new WorkoholicHuman();
@@ -112,31 +109,26 @@ public abstract class Human
 	public abstract void work();
 	public abstract void sleep();
 
-	private static class LazyHuman extends Human
-	{
+	private static class LazyHuman extends Human {
 		public void wakeUp() { System.out.println("Waking up slowly"); }
 		public void work() { System.out.println("Working slowly"); }
 		public void sleep() { System.out.println("Sleeping deeply"); }
 	}
 
-	private static class BriskHuman extends Human
-	{
+	private static class BriskHuman extends Human {
 		public void wakeUp() { System.out.println("Waking up briskly"); }
 		public void work() { System.out.println("Working briskly"); }
 		public void sleep() { System.out.println("Sleeping normally"); }
 	}
 
-	private static class WorkoholicHuman extends Human
-	{
+	private static class WorkoholicHuman extends Human {
 		public void wakeUp() { System.out.println("Waking up quickly"); }
 		public void work() { System.out.println("Working a lot"); }
 		public void sleep() { System.out.println("Sleeping shortly"); }
 	}
 
-	public static void test()
-	{
-		for(int i=1; i<=3; i++)
-		{
+	public static void test() {
+		for (int i=1; i<=3; i++) {
 			Human h = getHuman();
 			System.out.println("\nNew human: " + h.getClass().getSimpleName());
 			h.wakeUp();
